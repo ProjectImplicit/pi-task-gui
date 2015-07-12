@@ -1,0 +1,11 @@
+{
+  "name": "piTaskEditor",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp"
+  },
+  "author": "",
+  "license": "MIT"
+}
