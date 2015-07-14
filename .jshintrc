@@ -2,7 +2,7 @@
 	"browser": true,
 	"curly": true,
 	"eqnull": true,
-	"es3": true,
+	"esnext": true,
 	"evil": true,
 	"expr": true,
 	"globals": {

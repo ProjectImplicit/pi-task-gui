@@ -1,4 +1,4 @@
-var a = {
+export let element = {
   title: 'Basic element',
   type:'object',
   properties:{
@@ -7,21 +7,18 @@ var a = {
     merge: {type:'array',uniqueItems: true,format:'table',items:{type:'string'}, description:'Attributes inheritance extends instead of overriding.'},
     regenerateTemplate: {type:'boolean', description:'Regenerate templates each time they are encountered'}
   },
-  defaultProperties: ['inherit'],
-  definitions: {
-    inherit: {
-      id: 'inherit',
-      title: 'inherit',
-      type: 'object',
-      format:'grid',
-      properties: {
-        set: {type: 'string',description: 'Which set are we inheriting from.'},
-        type:{'enum':['random','exRandom','sequential','byData'], description:'The inheritance method.'},
-        seed:{type:'string'},
-        repeat:{type:'boolean'}
-      },
-      defaultProperties: ['set','type']
+  defaultProperties: ['inherit']
+}
 
-    }
-  }
+export let inherit = {
+  title: 'inherit',
+  type: 'object',
+  format:'grid',
+  properties: {
+    set: {type: 'string',description: 'Which set are we inheriting from.'},
+    type:{'enum':['random','exRandom','sequential','byData'], description:'The inheritance method.'},
+    seed:{type:'string'},
+    repeat:{type:'boolean'}
+  },
+  defaultProperties: ['set','type']
 }
