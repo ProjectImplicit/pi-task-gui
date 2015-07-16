@@ -26,7 +26,7 @@ export let set = {
   items: {
     type:'object',
     properties: {
-      set: {type:'sting', description:'Set name'},
+      set: {type:'string', description:'Set name'},
       elements: {type:'array', items:{$ref:'#/definitions/<%=elementName%>Element'}}
     }
   }

@@ -3,17 +3,19 @@ export function deepTemplate(obj, context){
 }
 
 function deepMap(obj, cb){
-  switch (typeof obj){
-    case 'array':
-      return obj.map(v => deepMap(v,cb));
-    case 'object':
+  if (Array.isArray(obj)){
+    return obj.map(v => deepMap(v,cb));
+  }
+
+  if (typeof obj == 'object'){
       return Object.keys(obj).reduce((result, key)=>{
         result[key] = deepMap(obj[key],cb);
         return  result;
       }, {});
-    default:
-      return cb(obj);
   }
+
+  // primitives and functions
+  return cb(obj);
 }
 
 // A simple templating solution inspired by John Resig's microtemplates.

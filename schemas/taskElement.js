@@ -14,7 +14,7 @@ let messageTask = {
   type:'object',
   properties: {
     type: {type:'string', 'enum': ['message'], options:{hidden:true}},
-    template: {type:'string', description:'The actual html to display as a string.'},
+    template: {type:'string', description:'The actual html to display as a string.', format: 'ejs'},
     templateUrl: {type:'string', description:'The url for the message html file.'},
     keys: {
       type:'array',
@@ -22,7 +22,7 @@ let messageTask = {
       description:'Controls the proceed key: either a key (i.e. \'a\') a keyCode (i.e. 65).'
     }
   },
-  defaultProperties: ['type','name','templateUrl']
+  defaultProperties: ['type','name','template']
 };
 
 export let taskElement = {

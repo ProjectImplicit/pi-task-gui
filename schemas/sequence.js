@@ -9,7 +9,7 @@ let sequence = {
     type:'object',
     oneOf: [
       {$ref:'#/definitions/<%= elementName %>Mixer'},
-      {$ref:'#/definitions/<%= elementName %>element'}
+      {$ref:'#/definitions/<%= elementName %>Element'}
     ]
   }
 };

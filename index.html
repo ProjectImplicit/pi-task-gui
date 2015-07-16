@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <title>piTask Editor</title>
     <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="bower_components/ace_builds/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="bower_components/ace_builds/src-min/mode-ejs.js" type="text/javascript" charset="utf-8"></script>
     <script src="vendor/jsoneditor.js"></script>
   </head>
   <body>
@@ -18,6 +20,7 @@
       /* global JSONEditor */
       JSONEditor.defaults.theme = 'bootstrap3';
       JSONEditor.defaults.iconlib = 'bootstrap3';
+      JSONEditor.plugins.ace.theme = 'monokai';
       // Initialize the editor with a JSON schema
 
       var editor;

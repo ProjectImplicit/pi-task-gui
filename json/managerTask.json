@@ -1,5 +1,5 @@
 {
-    "title": "Task",
+    "title": "Manager",
     "type": "object",
     "properties": {
         "current": {
@@ -39,12 +39,12 @@
                             "description": "Which set are we inheriting from."
                         },
                         "type": {
-                            "enum": {
-                                "0": "random",
-                                "1": "exRandom",
-                                "2": "sequential",
-                                "3": "byData"
-                            },
+                            "enum": [
+                                "random",
+                                "exRandom",
+                                "sequential",
+                                "byData"
+                            ],
                             "description": "The inheritance method."
                         },
                         "seed": {
@@ -54,10 +54,10 @@
                             "type": "boolean"
                         }
                     },
-                    "defaultProperties": {
-                        "0": "set",
-                        "1": "type"
-                    }
+                    "defaultProperties": [
+                        "set",
+                        "type"
+                    ]
                 },
                 "data": {
                     "type": "object",
@@ -80,16 +80,16 @@
                     "description": "Regenerate templates each time they are encountered."
                 }
             },
-            "oneOf": {
-                "0": {
+            "oneOf": [
+                {
                     "title": "PIP",
                     "type": "object",
                     "properties": {
                         "type": {
                             "type": "string",
-                            "enum": {
-                                "0": "pip"
-                            },
+                            "enum": [
+                                "pip"
+                            ],
                             "options": {
                                 "hidden": true
                             }
@@ -103,28 +103,29 @@
                             "description": "The url for the quest or pip script."
                         }
                     },
-                    "defaultProperties": {
-                        "0": "type",
-                        "1": "name",
-                        "2": "scriptUrl"
-                    }
+                    "defaultProperties": [
+                        "type",
+                        "name",
+                        "scriptUrl"
+                    ]
                 },
-                "1": {
+                {
                     "title": "Message",
                     "type": "object",
                     "properties": {
                         "type": {
                             "type": "string",
-                            "enum": {
-                                "0": "message"
-                            },
+                            "enum": [
+                                "message"
+                            ],
                             "options": {
                                 "hidden": true
                             }
                         },
                         "template": {
                             "type": "string",
-                            "description": "The actual html to display as a string."
+                            "description": "The actual html to display as a string.",
+                            "format": "ejs"
                         },
                         "templateUrl": {
                             "type": "string",
@@ -138,13 +139,13 @@
                             "description": "Controls the proceed key: either a key (i.e. 'a') a keyCode (i.e. 65)."
                         }
                     },
-                    "defaultProperties": {
-                        "0": "type",
-                        "1": "name",
-                        "2": "templateUrl"
-                    }
+                    "defaultProperties": [
+                        "type",
+                        "name",
+                        "template"
+                    ]
                 }
-            },
+            ],
             "additionalProperties": false
         },
         "taskSet": {
@@ -154,7 +155,7 @@
                 "type": "object",
                 "properties": {
                     "set": {
-                        "type": "sting",
+                        "type": "string",
                         "description": "Set name"
                     },
                     "elements": {
@@ -173,20 +174,20 @@
             "required": true,
             "items": {
                 "type": "object",
-                "oneOf": {
-                    "0": {
+                "oneOf": [
+                    {
                         "$ref": "#/definitions/taskMixer"
                     },
-                    "1": {
-                        "$ref": "#/definitions/taskelement"
+                    {
+                        "$ref": "#/definitions/taskElement"
                     }
-                }
+                ]
             }
         },
         "taskMixer": {
             "title": "mixer",
-            "oneOf": {
-                "0": {
+            "oneOf": [
+                {
                     "title": "Random",
                     "type": "object",
                     "description": "Randomize the order of elements within the sub-sequence.",
@@ -194,9 +195,9 @@
                     "properties": {
                         "mixer": {
                             "type": "string",
-                            "enum": {
-                                "0": "random"
-                            },
+                            "enum": [
+                                "random"
+                            ],
                             "required": true,
                             "options": {
                                 "hidden": true
@@ -207,7 +208,7 @@
                         }
                     }
                 },
-                "1": {
+                {
                     "title": "Repeat",
                     "type": "object",
                     "description": "Repeat the sub-sequence \"times\" times.",
@@ -215,9 +216,9 @@
                     "properties": {
                         "mixer": {
                             "type": "string",
-                            "enum": {
-                                "0": "repeat"
-                            },
+                            "enum": [
+                                "repeat"
+                            ],
                             "required": true,
                             "options": {
                                 "hidden": true
@@ -231,7 +232,7 @@
                         }
                     }
                 },
-                "2": {
+                {
                     "title": "Weighted random",
                     "type": "object",
                     "description": "Randomly pick an element out of the sub-sequence, according to the set weights.",
@@ -239,9 +240,9 @@
                     "properties": {
                         "mixer": {
                             "type": "string",
-                            "enum": {
-                                "0": "weightedRandom"
-                            },
+                            "enum": [
+                                "weightedRandom"
+                            ],
                             "required": true,
                             "options": {
                                 "hidden": true
@@ -259,7 +260,7 @@
                         }
                     }
                 },
-                "3": {
+                {
                     "title": "Choose",
                     "type": "object",
                     "description": "Randomly choose n elements out of the sub-sequence.",
@@ -267,9 +268,9 @@
                     "properties": {
                         "mixer": {
                             "type": "string",
-                            "enum": {
-                                "0": "choose"
-                            },
+                            "enum": [
+                                "choose"
+                            ],
                             "required": true,
                             "options": {
                                 "hidden": true
@@ -284,7 +285,7 @@
                         }
                     }
                 },
-                "4": {
+                {
                     "title": "Wrapper",
                     "type": "object",
                     "description": "A sort of parenthesis; delays evaluation of the sub-sequence until it is reached.",
@@ -292,9 +293,9 @@
                     "properties": {
                         "mixer": {
                             "type": "string",
-                            "enum": {
-                                "0": "wrapper"
-                            },
+                            "enum": [
+                                "wrapper"
+                            ],
                             "required": true,
                             "options": {
                                 "hidden": true
@@ -305,7 +306,7 @@
                         }
                     }
                 }
-            }
+            ]
         }
     }
 }

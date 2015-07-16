@@ -4,13 +4,11 @@ jsonfile.spaces = 4;
 import {Task} from './schemas/taskConstructor';
 import {taskElement} from './schemas/taskElement';
 
-let task = new Task('Task');
+let task = new Task('Manager');
 
 task.registerElement('task', taskElement);
 task.registerRootSequence('task');
 // task.registerSettings(settings);
-
-
 
 let outputFilename = './json/managerTask.json';
 jsonfile.writeFile(outputFilename, task.render(), function (err) {
