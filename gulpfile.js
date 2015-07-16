@@ -1,46 +1,18 @@
-// import {definitions, mixinElement, mixinSequence} from './schemas/core';
-// import {element, inherit} from './schemas/element';
+var jsonfile = require('jsonfile');
+jsonfile.spaces = 4;
 
-let properties = {
-	settings:{$ref:'#/definitions/settings'},
-	taskSets: {$ref:'#/definitions/taskSets'},
-	sequence:{$ref:'#/definitions/taskSequence'}
-};
+import {Task} from './schemas/taskConstructor';
+import {taskElement} from './schemas/taskElement';
 
-function buildProperties({elements, rootElement}){
-	let properties = {
-		sequence: {$ref:`#/definitions/${rootElement}Sequence`},
-		settings:{$ref:'#/definitions/settings'},
-		current: {type:'object'},
-		global: {type:'object'}
-	};
+let task = new Task('Task');
 
-	elements.forEach(name => {
-		properties[`${name}Sets`] = {$ref:`#/definitions/${name}Sets`};
-	});
-
-	return properties;
-}
-
-console.log(buildProperties({elements:['page','questions'],rootElement: 'page'}));
-
-// var study = {
-// 	title: 'piTask',
-// 	properties
-// }
-
-// Object.assign(study.definitions, core, mixinElement('task', task), mixinSequence('task');
-
-// mixinElement // define element and set
-// mixinSequence(elementName) // define sequence
-
-// // names are prefixed by element type
+task.registerElement('task', taskElement);
+task.registerRootSequence('task');
+// task.registerSettings(settings);
 
 
-let task = new Task('Manager');
 
-task.registerElement('page', page);
-task.registerElement('question', question);
-task.registerRootSequence('page');
-task.registerSettings(settings);
-task.render(); // throws if sequence or settings were'nt set
+let outputFilename = './json/managerTask.json';
+jsonfile.writeFile(outputFilename, task.render(), function (err) {
+  console.error(err);
+});

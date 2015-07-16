@@ -1,17 +1,7 @@
-export let element = {
-  title: 'Basic element',
-  type:'object',
-  properties:{
-    inherit: {$ref:'#/definitions/inherit'},
-    data: {type:'object', options:{no_additional_properties:false}, description:'Sets up some local variables.'},
-    merge: {type:'array',uniqueItems: true,format:'table',items:{type:'string'}, description:'Attributes inheritance extends instead of overriding.'},
-    regenerateTemplate: {type:'boolean', description:'Regenerate templates each time they are encountered'}
-  },
-  defaultProperties: ['inherit']
-}
+import {deepTemplate} from './deepTemplate';
 
 export let inherit = {
-  title: 'inherit',
+  title: 'Inherit',
   type: 'object',
   format:'grid',
   properties: {
@@ -21,4 +11,46 @@ export let inherit = {
     repeat:{type:'boolean'}
   },
   defaultProperties: ['set','type']
+};
+
+export let basicElementProperties = {
+  inherit: inherit,
+  data: {type:'object', options:{no_additional_properties:false}, description:'Sets up some local variables.'},
+  merge: {type:'array',uniqueItems: true,format:'table',items:{type:'string'}, description:'Attributes inheritance extends instead of overriding.'},
+  regenerateTemplate: {type:'boolean', description:'Regenerate templates each time they are encountered.'}
+};
+
+export let set = {
+  title: '<%= cappedElementName %> set',
+  type: 'array',
+  items: {
+    type:'object',
+    properties: {
+      set: {type:'sting', description:'Set name'},
+      elements: {type:'array', items:{$ref:'#/definitions/<%=elementName%>Element'}}
+    }
+  }
+};
+
+export function registerElement(elementName, element){
+  let definitions = this.schema.definitions;
+  let properties = this.schema.properties;
+
+  let context = {
+    elementName,
+    cappedElementName: capitalizeFirstLetter(elementName)
+  };
+
+  // assigned shared properties
+  element.properties || (element.properties = {});
+  Object.assign(element.properties,basicElementProperties);
+
+  definitions[`${elementName}Element`] = deepTemplate(element,context);
+  definitions[`${elementName}Set`] = deepTemplate(set,context);
+
+  properties[`${elementName}Set`] = {$ref:`#/definitions/${elementName}Set`};
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }

@@ -1,17 +1,20 @@
-var sequence = {
+import {deepTemplate} from './deepTemplate';
+
+let sequence = {
   id: 'sequence',
   title: 'Sequence',
   type:'array',
+  required:true,
   items: {
     type:'object',
     oneOf: [
-      {$ref:'#/definitions/mixer'},
-      {$ref:'#/definitions/basicItem'}
+      {$ref:'#/definitions/<%= elementName %>Mixer'},
+      {$ref:'#/definitions/<%= elementName %>element'}
     ]
   }
 };
 
-var mixer = {
+let mixer = {
   title:'mixer',
   oneOf: [
     {
@@ -20,8 +23,8 @@ var mixer = {
       description: 'Randomize the order of elements within the sub-sequence.',
       additionalProperties:false,
       properties:{
-        mixer: {type:'string','enum':['random'], options:{hidden:true}},
-        data: {$ref:'#/definitions/sequence'}
+        mixer: {type:'string','enum':['random'], required:true, options:{hidden:true}},
+        data: {$ref:'#/definitions/<%= elementName %>Sequence'}
       }
     },
     {
@@ -30,9 +33,9 @@ var mixer = {
       description:'Repeat the sub-sequence "times" times.',
       additionalProperties:false,
       properties:{
-        mixer: {type:'string','enum':['repeat'], options:{hidden:true}},
+        mixer: {type:'string','enum':['repeat'], required:true, options:{hidden:true}},
         times: {type:'integer'},
-        data: {$ref:'#/definitions/sequence'}
+        data: {$ref:'#/definitions/<%= elementName %>Sequence'}
       }
     },
     {
@@ -41,9 +44,9 @@ var mixer = {
       description:'Randomly pick an element out of the sub-sequence, according to the set weights.',
       additionalProperties:false,
       properties:{
-        mixer: {type:'string','enum':['weightedRandom'], options:{hidden:true}},
+        mixer: {type:'string','enum':['weightedRandom'], required:true, options:{hidden:true}},
         weights: {type:'array',items:{type:'number'},format:'table'},
-        data: {$ref:'#/definitions/sequence'}
+        data: {$ref:'#/definitions/<%= elementName %>Sequence'}
       }
     },
     {
@@ -52,9 +55,9 @@ var mixer = {
       description: 'Randomly choose n elements out of the sub-sequence.',
       additionalProperties:false,
       properties:{
-        mixer: {type:'string','enum':['choose'], options:{hidden:true}},
+        mixer: {type:'string','enum':['choose'], required:true, options:{hidden:true}},
         n: {type:'number','default':1},
-        data: {$ref:'#/definitions/sequence'}
+        data: {$ref:'#/definitions/<%= elementName %>Sequence'}
       }
     },
     {
@@ -63,14 +66,20 @@ var mixer = {
       description:'A sort of parenthesis; delays evaluation of the sub-sequence until it is reached.',
       additionalProperties:false,
       properties:{
-        mixer: {type:'string','enum':['wrapper'], options:{hidden:true}},
-        data: {$ref:'#/definitions/sequence'}
+        mixer: {type:'string','enum':['wrapper'], required:true, options:{hidden:true}},
+        data: {$ref:'#/definitions/<%= elementName %>Sequence'}
       }
     }
   ]
 };
 
-module.exports = {
-  sequence: sequence,
-  mixer: mixer
+export function registerSequence(elementName, options){
+  let definitions = this.schema.definitions;
+  let properties = this.schema.properties;
+  let context = {elementName};
+
+  definitions[`${elementName}Sequence`] = deepTemplate(sequence,context);
+  definitions[`${elementName}Mixer`] = deepTemplate(mixer,context);
+
+  options.rootSequence && (properties.sequence = {$ref:`#/definitions/${elementName}Sequence`});
 }
