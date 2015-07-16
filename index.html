@@ -19,10 +19,12 @@
       JSONEditor.defaults.theme = 'bootstrap3';
       JSONEditor.defaults.iconlib = 'bootstrap3';
       // Initialize the editor with a JSON schema
-      var editor = new JSONEditor(document.getElementById('editor_holder'),{
-        ajax:true,
-        //no_additional_properties:true,
-        schema: {$ref:'json/managerTask.json'}
+
+      var editor;
+      get('json/managerTask.json', function(response){
+        editor = new JSONEditor(document.getElementById('editor_holder'),{
+          schema: response
+        });
       });
 
       // Hook up the submit button to log to the console
@@ -30,6 +32,32 @@
         // Get the value from the editor
         console.log(editor.getValue());
       });
+
+      function get(url, cb){
+        var r = new XMLHttpRequest();
+        r.open("GET", url, true);
+        r.onreadystatechange = function () {
+          if (r.readyState != 4) {return;}
+          // Request succeeded
+          if(r.status === 200) {
+            var response;
+            try {
+              response = JSON.parse(r.responseText);
+            }
+            catch(e) {
+              window.console.log(e);
+              throw "Failed to parse external ref "+url;
+            }
+
+            if(!response || typeof response !== "object") {throw "External ref does not contain a valid schema - "+url;}
+            cb(response);
+          } else { // Request failed
+            window.console.log(r);
+            throw "Failed to fetch ref via ajax- "+url;
+          }
+        };
+        r.send();
+      }
     </script>
   </body>
 </html>
