@@ -67,7 +67,16 @@
           "properties": {
             "set": {
               "type": "string",
-              "description": "Which set are we inheriting from."
+              "watch": {
+                "sets": "taskSet"
+              },
+              "enumSource": [
+                {
+                  "source": "sets",
+                  "value": "{{item.set}}"
+                }
+              ],
+              "description": "Which set are we inheriting from (You must create the appropriate set before inheriting it)."
             },
             "type": {
               "enum": [
@@ -76,6 +85,7 @@
                 "sequential",
                 "byData"
               ],
+              "type": "string",
               "description": "The inheritance method."
             },
             "seed": {
@@ -115,6 +125,7 @@
         {
           "title": "PIP",
           "type": "object",
+          "format": "grid",
           "properties": {
             "type": {
               "type": "string",
@@ -144,6 +155,7 @@
         {
           "title": "Questionnaire",
           "type": "object",
+          "format": "grid",
           "properties": {
             "type": {
               "type": "string",
@@ -214,6 +226,7 @@
     },
     "taskSet": {
       "title": "Task sets",
+      "id": "taskSet",
       "type": "array",
       "items": {
         "type": "object",

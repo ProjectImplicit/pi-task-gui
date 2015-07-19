@@ -1,6 +1,7 @@
 let pipTask = {
   title: 'PIP',
   type:'object',
+  format:'grid',
   properties: {
     type: {type:'string', 'enum': ['pip'], options:{hidden:true}},
     script: {type:'string', description:'The actual script object for the pip task.'},
@@ -12,6 +13,7 @@ let pipTask = {
 let questTask = {
   title: 'Questionnaire',
   type:'object',
+  format:'grid',
   properties: {
     type: {type:'string', 'enum': ['quest'], options:{hidden:true}},
     script: {type:'string', description:'The actual script object for the quest task.'},

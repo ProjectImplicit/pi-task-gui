@@ -5,8 +5,17 @@ export let inherit = {
   type: 'object',
   format:'grid',
   properties: {
-    set: {type: 'string',description: 'Which set are we inheriting from.'},
-    type:{'enum':['random','exRandom','sequential','byData'], description:'The inheritance method.'},
+    set: {
+      type: 'string',
+      watch:{
+        sets: '<%=elementName%>Set'
+      },
+      enumSource:[
+        {source:'sets', value:'{{item.set}}'}
+      ],
+      description: 'Which set are we inheriting from (You must create the appropriate set before inheriting it).'
+    },
+    type:{'enum':['random','exRandom','sequential','byData'], type:'string',description:'The inheritance method.'},
     seed:{type:'string'},
     repeat:{type:'boolean'}
   },
@@ -22,6 +31,7 @@ export let basicElementProperties = {
 
 export let set = {
   title: '<%= cappedElementName %> sets',
+  id: '<%=elementName%>Set',
   type: 'array',
   items: {
     type:'object',
