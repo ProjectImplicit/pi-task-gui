@@ -1,16 +1,14 @@
-var jsonfile = require('jsonfile');
-jsonfile.spaces = 4;
+require('babel/register')();
+var gulp = require('gulp');
 
-import {Task} from './schemas/taskConstructor';
-import {taskElement} from './schemas/taskElement';
+gulp.task('manager', function(cb){
+	var jsonfile = require('jsonfile');
+	var manager = require('./schemas/manager');
 
-let task = new Task('Manager');
+	jsonfile.writeFile('./json/managerTask.json',manager, {spaces:2}, cb);
+});
 
-task.registerElement('task', taskElement);
-task.registerRootSequence('task');
-// task.registerSettings(settings);
 
-let outputFilename = './json/managerTask.json';
-jsonfile.writeFile(outputFilename, task.render(), function (err) {
-  console.error(err);
+gulp.task('watch', function(){
+	gulp.watch(['schemas/**/*'], ['manager']);
 });

@@ -1,312 +1,431 @@
 {
-    "title": "Manager",
-    "type": "object",
-    "properties": {
-        "current": {
-            "type": "object"
-        },
-        "global": {
-            "type": "object"
-        },
-        "taskSet": {
-            "$ref": "#/definitions/taskSet"
-        },
-        "sequence": {
-            "$ref": "#/definitions/taskSequence"
-        }
+  "title": "Manager",
+  "type": "object",
+  "properties": {
+    "current": {
+      "type": "object"
     },
-    "definitions": {
-        "taskElement": {
-            "title": "Task",
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "description": "The name of the task, used for recording information.",
-                    "required": true
-                },
-                "title": {
-                    "type": "string",
-                    "description": "A string to be used as the page title (the name displayed on the tag). It is reset at the end of the task."
-                },
-                "inherit": {
-                    "title": "Inherit",
-                    "type": "object",
-                    "format": "grid",
-                    "properties": {
-                        "set": {
-                            "type": "string",
-                            "description": "Which set are we inheriting from."
-                        },
-                        "type": {
-                            "enum": [
-                                "random",
-                                "exRandom",
-                                "sequential",
-                                "byData"
-                            ],
-                            "description": "The inheritance method."
-                        },
-                        "seed": {
-                            "type": "string"
-                        },
-                        "repeat": {
-                            "type": "boolean"
-                        }
-                    },
-                    "defaultProperties": [
-                        "set",
-                        "type"
-                    ]
-                },
-                "data": {
-                    "type": "object",
-                    "options": {
-                        "no_additional_properties": false
-                    },
-                    "description": "Sets up some local variables."
-                },
-                "merge": {
-                    "type": "array",
-                    "uniqueItems": true,
-                    "format": "table",
-                    "items": {
-                        "type": "string"
-                    },
-                    "description": "Attributes inheritance extends instead of overriding."
-                },
-                "regenerateTemplate": {
-                    "type": "boolean",
-                    "description": "Regenerate templates each time they are encountered."
-                }
-            },
-            "oneOf": [
-                {
-                    "title": "PIP",
-                    "type": "object",
-                    "properties": {
-                        "type": {
-                            "type": "string",
-                            "enum": [
-                                "pip"
-                            ],
-                            "options": {
-                                "hidden": true
-                            }
-                        },
-                        "script": {
-                            "type": "string",
-                            "description": "The actual script object for the quest or pip tasks."
-                        },
-                        "scriptUrl": {
-                            "type": "string",
-                            "description": "The url for the quest or pip script."
-                        }
-                    },
-                    "defaultProperties": [
-                        "type",
-                        "name",
-                        "scriptUrl"
-                    ]
-                },
-                {
-                    "title": "Message",
-                    "type": "object",
-                    "properties": {
-                        "type": {
-                            "type": "string",
-                            "enum": [
-                                "message"
-                            ],
-                            "options": {
-                                "hidden": true
-                            }
-                        },
-                        "template": {
-                            "type": "string",
-                            "description": "The actual html to display as a string.",
-                            "format": "ejs"
-                        },
-                        "templateUrl": {
-                            "type": "string",
-                            "description": "The url for the message html file."
-                        },
-                        "keys": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            },
-                            "description": "Controls the proceed key: either a key (i.e. 'a') a keyCode (i.e. 65)."
-                        }
-                    },
-                    "defaultProperties": [
-                        "type",
-                        "name",
-                        "template"
-                    ]
-                }
-            ],
-            "additionalProperties": false
-        },
-        "taskSet": {
-            "title": "Task set",
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "set": {
-                        "type": "string",
-                        "description": "Set name"
-                    },
-                    "elements": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/taskElement"
-                        }
-                    }
-                }
-            }
-        },
-        "taskSequence": {
-            "id": "sequence",
-            "title": "Sequence",
-            "type": "array",
-            "required": true,
-            "items": {
-                "type": "object",
-                "oneOf": [
-                    {
-                        "$ref": "#/definitions/taskMixer"
-                    },
-                    {
-                        "$ref": "#/definitions/taskElement"
-                    }
-                ]
-            }
-        },
-        "taskMixer": {
-            "title": "mixer",
-            "oneOf": [
-                {
-                    "title": "Random",
-                    "type": "object",
-                    "description": "Randomize the order of elements within the sub-sequence.",
-                    "additionalProperties": false,
-                    "properties": {
-                        "mixer": {
-                            "type": "string",
-                            "enum": [
-                                "random"
-                            ],
-                            "required": true,
-                            "options": {
-                                "hidden": true
-                            }
-                        },
-                        "data": {
-                            "$ref": "#/definitions/taskSequence"
-                        }
-                    }
-                },
-                {
-                    "title": "Repeat",
-                    "type": "object",
-                    "description": "Repeat the sub-sequence \"times\" times.",
-                    "additionalProperties": false,
-                    "properties": {
-                        "mixer": {
-                            "type": "string",
-                            "enum": [
-                                "repeat"
-                            ],
-                            "required": true,
-                            "options": {
-                                "hidden": true
-                            }
-                        },
-                        "times": {
-                            "type": "integer"
-                        },
-                        "data": {
-                            "$ref": "#/definitions/taskSequence"
-                        }
-                    }
-                },
-                {
-                    "title": "Weighted random",
-                    "type": "object",
-                    "description": "Randomly pick an element out of the sub-sequence, according to the set weights.",
-                    "additionalProperties": false,
-                    "properties": {
-                        "mixer": {
-                            "type": "string",
-                            "enum": [
-                                "weightedRandom"
-                            ],
-                            "required": true,
-                            "options": {
-                                "hidden": true
-                            }
-                        },
-                        "weights": {
-                            "type": "array",
-                            "items": {
-                                "type": "number"
-                            },
-                            "format": "table"
-                        },
-                        "data": {
-                            "$ref": "#/definitions/taskSequence"
-                        }
-                    }
-                },
-                {
-                    "title": "Choose",
-                    "type": "object",
-                    "description": "Randomly choose n elements out of the sub-sequence.",
-                    "additionalProperties": false,
-                    "properties": {
-                        "mixer": {
-                            "type": "string",
-                            "enum": [
-                                "choose"
-                            ],
-                            "required": true,
-                            "options": {
-                                "hidden": true
-                            }
-                        },
-                        "n": {
-                            "type": "number",
-                            "default": 1
-                        },
-                        "data": {
-                            "$ref": "#/definitions/taskSequence"
-                        }
-                    }
-                },
-                {
-                    "title": "Wrapper",
-                    "type": "object",
-                    "description": "A sort of parenthesis; delays evaluation of the sub-sequence until it is reached.",
-                    "additionalProperties": false,
-                    "properties": {
-                        "mixer": {
-                            "type": "string",
-                            "enum": [
-                                "wrapper"
-                            ],
-                            "required": true,
-                            "options": {
-                                "hidden": true
-                            }
-                        },
-                        "data": {
-                            "$ref": "#/definitions/taskSequence"
-                        }
-                    }
-                }
-            ]
-        }
+    "global": {
+      "type": "object"
+    },
+    "taskSet": {
+      "$ref": "#/definitions/taskSet"
+    },
+    "sequence": {
+      "$ref": "#/definitions/taskSequence"
+    },
+    "settings": {
+      "$ref": "#/definitions/settings"
     }
+  },
+  "definitions": {
+    "taskElement": {
+      "title": "Task",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the task, used for recording information.",
+          "required": true
+        },
+        "title": {
+          "type": "string",
+          "description": "A string to be used as the page title (the name displayed on the tag). It is reset at the end of the task."
+        },
+        "canvas": {
+          "title": "Canvas settings",
+          "type": "object",
+          "properties": {
+            "background": {
+              "type": "string",
+              "format": "color",
+              "description": "The overall background color.",
+              "default": "#FFFFFF"
+            },
+            "canvasBackground": {
+              "type": "string",
+              "format": "color",
+              "description": "Default canvas background color.",
+              "default": "#FFFFFF"
+            },
+            "fontColor": {
+              "type": "string",
+              "format": "color",
+              "description": "Default font color.",
+              "default": "#000000"
+            },
+            "fontSize": {
+              "type": "string",
+              "description": "Default font size."
+            }
+          }
+        },
+        "inherit": {
+          "title": "Inherit",
+          "type": "object",
+          "format": "grid",
+          "properties": {
+            "set": {
+              "type": "string",
+              "description": "Which set are we inheriting from."
+            },
+            "type": {
+              "enum": [
+                "random",
+                "exRandom",
+                "sequential",
+                "byData"
+              ],
+              "description": "The inheritance method."
+            },
+            "seed": {
+              "type": "string"
+            },
+            "repeat": {
+              "type": "boolean"
+            }
+          },
+          "defaultProperties": [
+            "set",
+            "type"
+          ]
+        },
+        "data": {
+          "type": "object",
+          "options": {
+            "no_additional_properties": false
+          },
+          "description": "Sets up some local variables."
+        },
+        "merge": {
+          "type": "array",
+          "uniqueItems": true,
+          "format": "table",
+          "items": {
+            "type": "string"
+          },
+          "description": "Attributes inheritance extends instead of overriding."
+        },
+        "regenerateTemplate": {
+          "type": "boolean",
+          "description": "Regenerate templates each time they are encountered."
+        }
+      },
+      "oneOf": [
+        {
+          "title": "PIP",
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "pip"
+              ],
+              "options": {
+                "hidden": true
+              }
+            },
+            "script": {
+              "type": "string",
+              "description": "The actual script object for the pip task."
+            },
+            "scriptUrl": {
+              "type": "string",
+              "description": "The url for the pip script.",
+              "format": "url"
+            }
+          },
+          "defaultProperties": [
+            "type",
+            "name",
+            "scriptUrl"
+          ]
+        },
+        {
+          "title": "Questionnaire",
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "quest"
+              ],
+              "options": {
+                "hidden": true
+              }
+            },
+            "script": {
+              "type": "string",
+              "description": "The actual script object for the quest task."
+            },
+            "scriptUrl": {
+              "type": "string",
+              "description": "The url for the quest script.",
+              "format": "url"
+            }
+          },
+          "defaultProperties": [
+            "type",
+            "name",
+            "scriptUrl"
+          ]
+        },
+        {
+          "title": "Message",
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "message"
+              ],
+              "options": {
+                "hidden": true
+              }
+            },
+            "template": {
+              "type": "string",
+              "description": "The actual html to display as a string.",
+              "format": "html",
+              "options": {
+                "wysiwyg": true
+              }
+            },
+            "templateUrl": {
+              "type": "string",
+              "description": "The url for the message html file."
+            },
+            "keys": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Controls the proceed key: either a key (i.e. 'a') a keyCode (i.e. 65)."
+            }
+          },
+          "defaultProperties": [
+            "type",
+            "name",
+            "template"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "taskSet": {
+      "title": "Task sets",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "set": {
+            "type": "string",
+            "description": "Set name"
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/taskElement"
+            }
+          }
+        }
+      }
+    },
+    "taskSequence": {
+      "id": "sequence",
+      "title": "Sequence",
+      "type": "array",
+      "required": true,
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/definitions/taskElement"
+          },
+          {
+            "$ref": "#/definitions/taskMixer"
+          }
+        ]
+      }
+    },
+    "taskMixer": {
+      "title": "mixer",
+      "oneOf": [
+        {
+          "title": "Random",
+          "type": "object",
+          "description": "Randomize the order of elements within the sub-sequence.",
+          "additionalProperties": false,
+          "properties": {
+            "mixer": {
+              "type": "string",
+              "enum": [
+                "random"
+              ],
+              "required": true,
+              "options": {
+                "hidden": true
+              }
+            },
+            "data": {
+              "$ref": "#/definitions/taskSequence"
+            }
+          }
+        },
+        {
+          "title": "Repeat",
+          "type": "object",
+          "description": "Repeat the sub-sequence \"times\" times.",
+          "additionalProperties": false,
+          "properties": {
+            "mixer": {
+              "type": "string",
+              "enum": [
+                "repeat"
+              ],
+              "required": true,
+              "options": {
+                "hidden": true
+              }
+            },
+            "times": {
+              "type": "integer"
+            },
+            "data": {
+              "$ref": "#/definitions/taskSequence"
+            }
+          }
+        },
+        {
+          "title": "Weighted random",
+          "type": "object",
+          "description": "Randomly pick an element out of the sub-sequence, according to the set weights.",
+          "additionalProperties": false,
+          "properties": {
+            "mixer": {
+              "type": "string",
+              "enum": [
+                "weightedRandom"
+              ],
+              "required": true,
+              "options": {
+                "hidden": true
+              }
+            },
+            "weights": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "format": "table"
+            },
+            "data": {
+              "$ref": "#/definitions/taskSequence"
+            }
+          }
+        },
+        {
+          "title": "Choose",
+          "type": "object",
+          "description": "Randomly choose n elements out of the sub-sequence.",
+          "additionalProperties": false,
+          "properties": {
+            "mixer": {
+              "type": "string",
+              "enum": [
+                "choose"
+              ],
+              "required": true,
+              "options": {
+                "hidden": true
+              }
+            },
+            "n": {
+              "type": "number",
+              "default": 1
+            },
+            "data": {
+              "$ref": "#/definitions/taskSequence"
+            }
+          }
+        },
+        {
+          "title": "Wrapper",
+          "type": "object",
+          "description": "A sort of parenthesis; delays evaluation of the sub-sequence until it is reached.",
+          "additionalProperties": false,
+          "properties": {
+            "mixer": {
+              "type": "string",
+              "enum": [
+                "wrapper"
+              ],
+              "required": true,
+              "options": {
+                "hidden": true
+              }
+            },
+            "data": {
+              "$ref": "#/definitions/taskSequence"
+            }
+          }
+        }
+      ]
+    },
+    "settings": {
+      "title": "Settings",
+      "type": "object",
+      "properties": {
+        "canvas": {
+          "title": "Canvas settings",
+          "type": "object",
+          "properties": {
+            "background": {
+              "type": "string",
+              "format": "color",
+              "description": "The overall background color.",
+              "default": "#FFFFFF"
+            },
+            "canvasBackground": {
+              "type": "string",
+              "format": "color",
+              "description": "Default canvas background color.",
+              "default": "#FFFFFF"
+            },
+            "fontColor": {
+              "type": "string",
+              "format": "color",
+              "description": "Default font color.",
+              "default": "#000000"
+            },
+            "fontSize": {
+              "type": "string",
+              "description": "Default font size."
+            }
+          }
+        },
+        "title": {
+          "type": "string",
+          "description": "A string to be used as the page title (the name displayed on the tag)."
+        },
+        "preloadImages": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "url"
+          },
+          "description": "An array of image urls to preload.",
+          "format": "table"
+        },
+        "skip": {
+          "type": "boolean",
+          "description": "Whether to activate the skip and refresh option. If activated, clicking \"ctrl r\" reloads the current task (this feature may not be supported on older browsers), clicking escape and then the right or left arrows skips to the next or previous tasks."
+        }
+      },
+      "defaultProperties": []
+    }
+  },
+  "defaultProperties": [
+    "sequence"
+  ]
 }

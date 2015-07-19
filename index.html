@@ -4,9 +4,20 @@
     <meta charset="utf-8" />
     <title>piTask Editor</title>
     <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
-    <script src="bower_components/ace_builds/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
-    <script src="bower_components/ace_builds/src-min/mode-ejs.js" type="text/javascript" charset="utf-8"></script>
+
+<!--     <script src="bower_components/ace_builds/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="bower_components/ace_builds/src-min/mode-ejs.js" type="text/javascript" charset="utf-8"></script> -->
+
+    <script type="text/javascript" src="vendor/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/sceditor/1.4.3/jquery.sceditor.xhtml.min.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/sceditor/1.4.3/themes/default.min.css">
+
     <script src="vendor/jsoneditor.js"></script>
+    <style type="text/css">
+ .sceditor-button {
+  box-sizing:content-box;
+}
+    </style>
   </head>
   <body>
     <h1>piTask Editor</h1>
@@ -21,11 +32,13 @@
       JSONEditor.defaults.theme = 'bootstrap3';
       JSONEditor.defaults.iconlib = 'bootstrap3';
       JSONEditor.plugins.ace.theme = 'monokai';
+      JSONEditor.plugins.sceditor.style = '//cdn.jsdelivr.net/sceditor/1.4.3/themes/default.min.css';
       // Initialize the editor with a JSON schema
 
       var editor;
       get('json/managerTask.json', function(response){
         editor = new JSONEditor(document.getElementById('editor_holder'),{
+          disable_edit_json : true,
           schema: response
         });
       });
