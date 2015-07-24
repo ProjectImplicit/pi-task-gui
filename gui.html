@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>piTask Editor</title>
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+
+    <style type="text/css">
+.custom-counter {
+    margin-left: 0;
+    padding-right: 0;
+    padding-left: 0;
+    list-style-type: none;
+}
+
+.custom-counter .custom-counter {
+  padding-left: 20px;
+}
+
+.custom-counter li:hover {
+  opacity: 0.5
+}
+
+.custom-counter li::before {
+    content: '{';
+    margin-right: 5px;
+    color: grey;
+    font-weight: bold;
+    padding: 3px 8px;
+}
+
+.custom-counter li::after {
+    content: '}';
+    margin-right: 5px;
+    color: grey;
+    font-weight: bold;
+    padding: 3px 8px;
+}
+
+.custom-counter li > .glyphicon {
+  display: none;
+}
+
+.custom-counter li:hover > .glyphicon {
+  display: inline;
+}
+
+    </style>
+  </head>
+  <body>
+
+
+    <div class="container">
+      <h1>piTask Editor</h1>
+
+      <div class="row">
+        <div class="col-md-4">
+
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Sequence
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  <ol class="custom-counter">
+                     <li>
+                        <b>Random</b> <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                        <ul class="custom-counter">
+                          <li>First</li>
+                          <li>Second</li>
+                          <li>Third</li>
+                        </ul>
+                     </li>
+                     <li>This is the second item</li>
+                     <li>This is the third item</li>
+                     <li>This is the fourth item</li>
+                     <li>This is the fifth item</li>
+                     <li>This is the sixth item</li>
+                  </ol>
+
+                  <div role="toolbar" class="btn-toolbar" style="padding-left:8px;">
+                    <div class="btn-group">
+                      <button aria-label="Left Align" class="btn btn-default btn-xs" type="button"><span aria-hidden="true" class="glyphicon glyphicon-plus"></span> Element</button>
+                      <button aria-label="Center Align" class="btn btn-default btn-xs" type="button"><span aria-hidden="true" class="glyphicon glyphicon-plus"></span> Mixer</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+                  <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Element Set
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                  <h5>basicElement</h5>
+                  <ol class="custom-counter">
+                     <li>This is the second item</li>
+                  </ol>
+                  <h5>myElement</h5>
+                  <ol class="custom-counter">
+                     <li>This is the second item</li>
+                     <li>This is the third item</li>
+                     <li>This is the fourth item</li>
+                     <li>This is the fifth item</li>
+                     <li>This is the sixth item</li>
+                  </ol>
+
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingThree">
+                <h4 class="panel-title">
+                  <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Settings
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div>
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Basic</a></li>
+              <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Advanced</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+
+              <div role="tabpanel" class="tab-pane active row" id="home">
+                <div class="col-md-6">
+                  <div class=" form-group">
+                    <label class=" control-label">name</label>
+                    <input type="text" class="form-control" name="root[sequence][0][name]">
+                    <p class="help-block">The name of the task, used for recording information.</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class=" form-group">
+                    <label class=" control-label">Script url</label>
+                    <input type="text" class="form-control" name="root[sequence][0][name]">
+                    <p class="help-block">The url for the pip script.</p>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="" href="#inheritColapsable" aria-expanded="true">
+                          Inherit +
+                        </a>
+                      </h4>
+                    </div>
+
+                    <div id="inheritColapsable" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                      <div class="panel-body">
+                          <div class="row">
+                            <div data-schematype="string" data-schemapath="root.sequence.0.inherit.set" class="col-md-6">
+                              <div class=" form-group">
+                              <label class=" control-label">set</label>
+                              <select class="form-control" name="root[sequence][0][inherit][set]">
+                                <option value="random">basicTrial</option>
+                                <option value="exRandom">otherTrial</option>
+                                <option value="random"> - None - </option>
+                              </select>
+                              <p class="help-block">Which set are we inheriting from (You must create the appropriate set before inheriting it).</p>
+                            </div>
+                          </div>
+                          <div data-schematype="string" data-schemapath="root.sequence.0.inherit.type" class="col-md-6">
+                            <div class=" form-group">
+                              <label class=" control-label">type</label>
+                              <select class="form-control" name="root[sequence][0][inherit][type]">
+                                <option value="random">random</option>
+                                <option value="exRandom">exRandom</option>
+                                <option value="sequential">sequential</option>
+                                <option value="byData">byData</option>
+                              </select>
+                              <p class="help-block">The inheritance method.</p>
+                            </div>
+                          </div>
+
+                          <div class="col-md-12">
+                            <h3>merge</h3><p>Attributes inheritance extends instead of overriding.</p><div class="well well-sm"><div style="display: none;"></div><table class="table table-bordered" style="width: auto; max-width: none; display: none;"><thead><tr><th>row</th><th style="display: none;"> </th></tr></thead><tbody></tbody></table><div class="btn-group"><button type="button" title="Add row" class="btn btn-default json-editor-btn-add "><i class="glyphicon glyphicon-plus"></i> row</button><button type="button" title="Delete Last row" class="btn btn-default json-editor-btn-delete " style="display: none;"><i class="glyphicon glyphicon-remove"></i> Last row</button><button type="button" title="Delete All" class="btn btn-default json-editor-btn-delete " style="display: none;"><i class="glyphicon glyphicon-remove"></i> All</button></div></div><div></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div role="tabpanel" class="tab-pane" id="messages">
+                <h4>Page</h4>
+                <div class=" form-group"><label class=" control-label">title</label><input type="text" class="form-control" name="root[sequence][0][title]"><p class="help-block">A string to be used as the page title (the name displayed on the tag). It is reset at the end of the task.</p></div>
+
+                <h4>Canvas</h4>
+                <form class="form-horizontal">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Font Color</label>
+                    <div class="col-sm-10">
+                      <input type="email" class="form-control" id="inputEmail3" placeholder="Color">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-2 control-label">Background Color</label>
+                    <div class="col-sm-10">
+                      <input type="password" class="form-control" id="inputPassword3" placeholder="Background">
+                    </div>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<script>
+$('#myTabs a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+});
+</script>
+  </body>
+</html>
